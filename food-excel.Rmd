@@ -18,28 +18,40 @@ library(readxl)
 * Read in the Excel file called `favourite-food.xlsx` from the `data-raw/` folder.
 
 ```{r label-me1, eval=FALSE}
-fav_food <- read_excel(___)
+library(readxl)
+fav_food <- read_excel("data-raw/favourite-food.xlsx")
+
 fav_food
+str(fav_food)
 ```
 
 * Clean up `NA`s and make sure you're happy with variable types.
 
 ```{r label-me2, eval=FALSE}
-fav_food <- read_excel(___, ___)
+fav_food <- read_excel("data-raw/favourite-food.xlsx", na=c("","N/A",".","99999"))
 fav_food 
+View(fav_food)
+class(fav_food$AGE)
+fav_food$AGE<-ifelse(fav_food$AGE=="five",5,fav_food$AGE)
+fav_food$AGE<-as.numeric(fav_food$AGE)
+
 ```
 
 * Convert SES (socio economic status) to a factor variables with levels in the 
 following order: `Low`, `Middle`, `High`.
 
 ```{r label-me3}
-# add code here
+class(fav_food$SES)
+fav_food$SES<-as.factor(fav_food$SES)
+fct_relevel(fav_food$SES, "Low", "Middle","High")
 ```
 
 * Write out the resulting data frame to `favourite-food.csv` in the `data/` folder.
 
 ```{r label-me4}
 # add code here
+
+write_csv(fav_food, file="data/favourite-food.csv")
 ```
 
 * Finally, read `favourite-food.csv` back in from the `data/` folder and 
@@ -47,6 +59,7 @@ observe the variable types. Are they as you left them?
 
 ```{r label-me5}
 # add code here
+fav_food<-read.csv("data/favourite-food.csv")
 ```
 
 ## Exercise 2
@@ -55,7 +68,7 @@ observe the variable types. Are they as you left them?
 taking care of `NA`s and variable types.
 
 ```{r label-me6, eval=FALSE}
-fav_food <- read_excel(___, ___)
+fav_food <- read_excel("data-raw/favourite-food.xlsx", na=c("","N/A",".","99999"))
 fav_food 
 ```
 
@@ -64,12 +77,17 @@ following order: `Low`, `Middle`, `High`.
 
 ```{r label-me7}
 # add code here
+class(fav_food$SES)
+fav_food$SES<-as.factor(fav_food$SES)
+
+fct_relevel(fav_food$SES, "Low", "Middle","High")
 ```
 
 * Write out the resulting data frame to `favourite-food.rds` in the `data/` folder.
 
 ```{r label-me8}
 # add code here
+write_rds(fav_food,"data/favorite-food.rds")
 ```
 
 * Read `favourite-food.rds` back in from the `data/` folder and observe the 
@@ -77,6 +95,10 @@ variable types. Are they as you left them?
 
 ```{r label-me9}
 # add code here
+fav_foodr<-read_rds("data/favorite-food.rds")
+
+class(fav_foodr$SES)
+
 ```
 
 ## References {#references}
